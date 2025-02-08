@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search"
+        android:title=""
+        app:showAsAction="ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <item android:id="@+id/more"
+         app:showAsAction="always"
+         android:icon="@drawable/click_more"
+        android:title=""
+        >
+        <menu>
+            <item
+                android:id="@+id/exportedfile"
+                android:title="Exported Notes"
+                android:icon="@drawable/exported_file"
+                />
+
+            <item
+                android:id="@+id/exportfile"
+                android:title="Export All Notes"
+                android:icon="@drawable/exportfile"
+                android:iconTint="@color/Primary"
+                />
+            <item
+                android:id="@+id/enablepin"
+                android:title="Enable Pin"
+                android:icon="@drawable/lock"
+                />
+            <item
+                android:id="@+id/disablepin"
+                android:title="Disable Pin"
+                android:icon="@drawable/disable"
+                />
+            <item
+                android:id="@+id/help"
+                android:title="Help"
+                android:icon="@drawable/help"
+                />
+            <item
+                android:id="@+id/about"
+                android:title="About"
+                android:icon="@drawable/about"
+                />
+        </menu>
+    </item>
+
+</menu>

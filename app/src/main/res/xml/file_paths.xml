@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Allow sharing PDFs stored in Documents folder -->
+    <external-files-path name="documents" path="Documents/" />
+
+    <!-- Allow sharing Images captured from Camera -->
+    <external-files-path name="images" path="Pictures/" />
+</paths>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/more"
+        android:title="More"
+        app:showAsAction="always"
+        android:icon="@drawable/click_more"
+        >
+        <menu>
+            <item
+                android:id="@+id/menu_delete"
+                android:title="Delete"
+                android:icon="@drawable/baseline_delete_24"
+                />
+
+            <item
+                android:id="@+id/backgroundcolor"
+                android:title="Change Background"
+                android:icon="@drawable/baseline_color_lens_24"
+                />
+            <item
+                android:id="@+id/exportUpdatefile"
+                android:title="Export Note"
+                android:icon="@drawable/exportfile"
+                android:iconTint="@color/Primary"
+                />
+            <item
+                android:id="@+id/share"
+                android:title="Share"
+                android:icon="@drawable/baseline_share_24"
+                />
+
+        </menu>
+    </item>
+
+</menu>

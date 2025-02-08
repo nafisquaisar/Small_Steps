@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/Primary"
+    android:layout_height="match_parent">
+
+
+
+    <!--    <GridLayout-->
+    <!--        android:id="@+id/gridLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:columnCount="3"-->
+    <!--        android:padding="16dp"-->
+    <!--        android:rowCount="6"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="1.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.0">-->
+
+    <!--        &lt;!&ndash; CardView 1 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView1"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color1"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="1"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 2 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView2"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color2"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="2"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 3 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView3"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color3"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="3"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 4 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView4"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color4"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="4"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 5 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView5"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color5"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="5"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 6 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView6"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color6"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="6"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 7 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView7"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color7"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="7"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 8 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView8"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color8"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="8"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 9 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView9"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color9"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="9"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 10 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView10"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color10"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="10"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 11 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView11"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color11"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="11"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 12 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView12"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color12"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="12"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 13 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView13"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color13"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="13"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 14 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView14"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color14"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="14"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--        &lt;!&ndash; CardView 15 &ndash;&gt;-->
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardView15"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_rowWeight="1"-->
+    <!--            android:layout_columnWeight="1"-->
+    <!--            android:layout_margin="8dp"-->
+    <!--            app:cardBackgroundColor="@color/color15"-->
+    <!--            app:cardCornerRadius="8dp">-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="15"-->
+    <!--                android:textColor="#000000" />-->
+    <!--        </androidx.cardview.widget.CardView>-->
+
+    <!--    </GridLayout>-->
+</LinearLayout>

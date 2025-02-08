@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/dark_green"
+    android:orientation="vertical"
+    tools:context=".Activity.SplashActivity">
+
+    <!-- App Icon -->
+    <ImageView
+        android:id="@+id/splashIcon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/icon1"
+        app:layout_constraintBottom_toTopOf="@+id/appNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <!-- App Name -->
+    <TextView
+        android:id="@+id/appNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Small Steps"
+        android:textStyle="bold"
+        android:textSize="@dimen/_24sdp"
+        android:textColor="@color/Primary"
+        app:layout_constraintTop_toBottomOf="@id/splashIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

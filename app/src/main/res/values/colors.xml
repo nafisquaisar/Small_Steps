@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#BFBFBF</color>
+    <color name="dark_green">#E0FCFF</color>
+
+    <color name="Primary">#3A98B9</color>
+
+    <color name="secondary">#61B3D0</color>
+    <color name="purple_700">#00c6fc</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="colorPrimary">#3A98B9</color>
+    <color name="hintColor">#2f6882</color>
+
+
+
+    <color name="color1">#E0FCFF</color>    <!-- Light cyan (dark_green in your example) -->
+    <color name="color2">#FFC1C1</color>    <!-- Light red -->
+    <color name="color3">#C1FFC1</color>    <!-- Light green -->
+    <color name="color4">#C1C1FF</color>    <!-- Light blue -->
+    <color name="color5">#FFFACD</color>    <!-- Lemon chiffon -->
+    <color name="color6">#E6E6FA</color>    <!-- Lavender -->
+    <color name="color7">#F0E68C</color>    <!-- Khaki -->
+    <color name="color8">#FFD700</color>    <!-- Gold -->
+    <color name="color9">#98FB98</color>    <!-- Pale green -->
+    <color name="color10">#AFEEEE</color>   <!-- Pale turquoise -->
+    <color name="color11">#FFB6C1</color>   <!-- Light pink -->
+    <color name="color12">#D8BFD8</color>   <!-- Thistle -->
+    <color name="color13">#FFE4B5</color>   <!-- Moccasin -->
+    <color name="color14">#FFDEAD</color>   <!-- Navajo white -->
+    <color name="color15">#F5DEB3</color>   <!-- Wheat -->
+    <color name="color16">#D3D3D3</color>   <!-- Light gray -->
+
+</resources>
