@@ -10,4 +10,9 @@ class CheckBoxRepository(private val db: NoteDatabase) {
     suspend fun updateCheckBox(note: CheckBoxNote) = db.getCheckBoxDao().updateCheckBoxNote(note)
 
     fun getAllCheckBoxNotes() = db.getCheckBoxDao().getAllCheckBoxNotes()
+
+    fun searchCheckBoxNote(query: String?) = query?.let {
+        val searchQuery = "%$it%"
+        db.getCheckBoxDao().searchCheckBoxNote(searchQuery)
+    }
 }

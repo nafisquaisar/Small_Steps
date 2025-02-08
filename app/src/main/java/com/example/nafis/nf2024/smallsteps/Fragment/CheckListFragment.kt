@@ -1,15 +1,27 @@
 package com.example.nafis.nf2024.smallsteps.Fragment
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.nafis.nf2024.smallsteps.Activity.AboutActivity
+import com.example.nafis.nf2024.smallsteps.Activity.HelpActivity
+import com.example.nafis.nf2024.smallsteps.Activity.LockScreenActivity
+import com.example.nafis.nf2024.smallsteps.Activity.SetLockActivity
 import com.example.nafis.nf2024.smallsteps.Adapter.CheckBoxAdapter
 import com.example.nafis.nf2024.smallsteps.Adapter.CheckBoxNoteAdapter
 import com.example.nafis.nf2024.smallsteps.Adapter.NoteAdapter
@@ -26,11 +38,13 @@ import com.example.nafis.nf2024.smallsteps.databinding.FragmentCheckListBinding
 import com.example.nafis.nf2024.smallsteps.databinding.FragmentNewCheckListBinding
 
 
-class CheckListFragment : Fragment() {
+class CheckListFragment : Fragment() ,SearchView.OnQueryTextListener{
      private lateinit var binding: FragmentCheckListBinding
     private lateinit var checkboxNotesViewModel : CheckBoxViewModel
     private lateinit var noteAdapter: CheckBoxNoteAdapter
     private lateinit var list:ArrayList<CheckBoxNote>
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     private val callback by lazy {
         object : CheckBoxNoteItemClick {
@@ -48,6 +62,10 @@ class CheckListFragment : Fragment() {
     }
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -125,6 +143,78 @@ class CheckListFragment : Fragment() {
             setNegativeButton("Cancel", null)
         }.create().show()
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        menu.clear()
+        inflater.inflate(R.menu.home_menu, menu)
+        sharedPreferences = requireActivity().getSharedPreferences("AppLockPrefs", Context.MODE_PRIVATE)
+
+        val savedPIN = sharedPreferences.getString("LOCK_PIN", null)
+
+        // Hide or show the menu item based on the condition
+        if (savedPIN.isNullOrEmpty()) {
+            menu?.findItem(R.id.disablepin)?.isVisible = false // Hide the settings item
+            menu?.findItem(R.id.enablepin)?.title="Enable PIN" // Show the settings item
+        } else {
+            menu?.findItem(R.id.disablepin)?.isVisible = true  // Show the settings item
+            menu?.findItem(R.id.enablepin)?.title="Change PIN" // Show the settings item
+
+        }
+
+        val mMenuSearch = menu.findItem(R.id.menu_search).actionView as SearchView
+        mMenuSearch.isSubmitButtonEnabled = false
+        mMenuSearch.setOnQueryTextListener(this)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if (newText != null){
+            searchNote(newText)
+        }
+        return true
+    }
+
+    private fun searchNote(query: String?) {
+        val searchQuery = query ?: ""
+        checkboxNotesViewModel.searchCheckBoxNote(searchQuery)?.observe(viewLifecycleOwner) { filteredList ->
+            if (filteredList.isEmpty()) {
+                Toast.makeText(context, "No results found", Toast.LENGTH_SHORT).show()
+            }
+            list = filteredList as ArrayList<CheckBoxNote>
+            noteAdapter.submitList(list)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_search -> {
+                // Handle your search item click
+                return true
+            }
+            R.id.help->{
+                startActivity(Intent(requireContext(), HelpActivity::class.java))
+            }
+            R.id.about->{
+                startActivity(Intent(requireContext(), AboutActivity::class.java))
+            }
+            R.id.enablepin->{
+                startActivity(Intent(requireContext(), SetLockActivity::class.java))
+            }
+            R.id.disablepin->{
+                var intent= Intent(requireContext(), LockScreenActivity::class.java)
+                intent.putExtra("disable",true)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
 
 }

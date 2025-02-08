@@ -15,18 +15,18 @@
         android:title=""
         >
         <menu>
-            <item
-                android:id="@+id/exportedfile"
-                android:title="Exported Notes"
-                android:icon="@drawable/exported_file"
-                />
+<!--            <item-->
+<!--                android:id="@+id/exportedfile"-->
+<!--                android:title="Exported Notes"-->
+<!--                android:icon="@drawable/exported_file"-->
+<!--                />-->
 
-            <item
-                android:id="@+id/exportfile"
-                android:title="Export All Notes"
-                android:icon="@drawable/exportfile"
-                android:iconTint="@color/Primary"
-                />
+<!--            <item-->
+<!--                android:id="@+id/exportfile"-->
+<!--                android:title="Export All Notes"-->
+<!--                android:icon="@drawable/exportfile"-->
+<!--                android:iconTint="@color/Primary"-->
+<!--                />-->
             <item
                 android:id="@+id/enablepin"
                 android:title="Enable Pin"

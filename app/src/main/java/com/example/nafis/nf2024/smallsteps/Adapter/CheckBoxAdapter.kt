@@ -30,6 +30,15 @@ class CheckBoxAdapter(private var s: Boolean=false) : ListAdapter<checkbox, Chec
         notifyItemChanged(position) // ✅ Only update the specific item
     }
 
+    fun deleteItem(position: Int) {
+        if (position >= 0 && position < currentList.size) {
+            val newList = currentList.toMutableList()
+            newList.removeAt(position)
+            submitList(newList) // Properly update the list
+        }
+    }
+
+
 
 
 

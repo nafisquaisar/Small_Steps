@@ -12,5 +12,8 @@ data class Notes(
     @PrimaryKey(autoGenerate = true)
     val id:Int,
     val noteTitle:String,
-    val noteBody:String
+    val noteBody:String,
+    val bgColor:String,
+    val createdDate:String,
+    val contentList:ArrayList<NoteContent> = arrayListOf()
 ) : Parcelable

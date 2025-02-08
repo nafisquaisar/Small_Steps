@@ -40,6 +40,37 @@ android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:id="@+id/datetime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_weight="1"
+                        android:textSize="@dimen/_12sdp"
+                        />
+                    <ImageView
+                        android:id="@+id/backgroundcolorchange"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/baseline_color_lens_24" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/addcheckbox"-->
+<!--                        android:layout_width="@dimen/_20sdp"-->
+<!--                        android:layout_height="@dimen/_20sdp"-->
+<!--                        android:src="@drawable/checkbox" />-->
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/line"
+                    />
+
                 <EditText
                     android:id="@+id/etNoteTitle"
                     android:layout_width="match_parent"
@@ -50,7 +81,7 @@ android:layout_height="match_parent"
                     android:inputType="text"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
 
@@ -133,7 +164,7 @@ android:layout_height="match_parent"
 
             <!-- Image Picker Icon -->
             <ImageView
-                android:id="@+id/btnImage"
+                android:id="@+id/imageBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
@@ -143,7 +174,7 @@ android:layout_height="match_parent"
 
             <!-- Image Picker Icon -->
             <ImageView
-                android:id="@+id/textImage"
+                android:id="@+id/textbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"

@@ -28,4 +28,6 @@ class CheckBoxViewModel(
         }
 
     fun getAllCheckBoxNotes() = checkBoxRepository.getAllCheckBoxNotes()
+
+    fun searchCheckBoxNote(query : String?)=checkBoxRepository.searchCheckBoxNote(query)
 }

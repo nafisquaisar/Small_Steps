@@ -24,7 +24,8 @@
         tools:layout="@layout/fragment_new_note" >
         <action
             android:id="@+id/action_newNoteFragment_to_noteTypeFragment"
-            app:destination="@id/noteTypeFragment" />
+            app:destination="@id/noteTypeFragment"
+            app:popUpTo="@id/noteTypeFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateNoteFragment"
@@ -38,7 +39,8 @@
             />
         <action
             android:id="@+id/action_updateNoteFragment_to_noteTypeFragment"
-            app:destination="@id/noteTypeFragment" />
+            app:destination="@id/noteTypeFragment"
+            app:popUpTo="@id/noteTypeFragment" />
     </fragment>
 
     <fragment
@@ -53,7 +55,8 @@
         tools:layout="@layout/fragment_new_check_list" >
         <action
             android:id="@+id/action_newCheckListFragment_to_noteTypeFragment"
-            app:destination="@id/noteTypeFragment" />
+            app:destination="@id/noteTypeFragment"
+            app:popUpTo="@id/noteTypeFragment" />
     </fragment>
     <fragment
         android:id="@+id/noteTypeFragment"
@@ -92,6 +95,7 @@
             />
         <action
             android:id="@+id/action_updateCheckBoxFragment_to_noteTypeFragment"
-            app:destination="@id/noteTypeFragment" />
+            app:destination="@id/noteTypeFragment"
+            app:popUpTo="@id/noteTypeFragment" />
     </fragment>
 </navigation>

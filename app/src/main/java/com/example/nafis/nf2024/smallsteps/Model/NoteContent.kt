@@ -4,8 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class checkbox(
-    var id:Int=0,
-    var isChecked: Boolean = false,
-    var text: String = ""
-) : Parcelable
+data class NoteContent(
+    val id:Int=0,
+    val Text:String="",
+    val imgUri:String=""
+)  : Parcelable

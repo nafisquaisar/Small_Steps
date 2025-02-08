@@ -41,6 +41,7 @@ import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Paragraph
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.properties.Delegates
 
 
 class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
@@ -49,7 +50,7 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
     private val binding get() = _binding!!
 
     private lateinit var notesViewModel : NoteViewModel
-
+  private var color by Delegates.notNull<Int>()
 
     private lateinit var currentNote : Notes
     private val CREATE_FILE_REQUEST_CODE = 1
@@ -80,13 +81,7 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
             }
         )
 
-        // Retrieve saved color from SharedPreferences
-        val sharedPref = requireActivity().getSharedPreferences("NoteBg", Context.MODE_PRIVATE)
-        val savedColor = sharedPref.getInt("selected_color", -1)
 
-        if (savedColor != -1) {
-            binding.mainbg.setBackgroundColor(savedColor) // Apply saved color
-        }
         return binding.root
     }
 
@@ -94,25 +89,12 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
         super.onViewCreated(view, savedInstanceState)
         notesViewModel = (activity as MainActivity).noteViewModel
         currentNote = args.note!!
+        setLayout()
 
-        binding.etNoteTitleUpdate.setText(currentNote.noteTitle)
-        binding.etNoteBodyUpdate.setText(currentNote.noteBody)
 
         // if the user update the note
         binding.fabDone.setOnClickListener{
-            val title = binding.etNoteTitleUpdate.text.toString().trim()
-            val body = binding.etNoteBodyUpdate.text.toString().trim()
-
-            if (title.isNotEmpty()){
-                val note = Notes(currentNote.id,title, body)
-                notesViewModel.updateNote(note)
-                view.findNavController().navigate(R.id.action_updateNoteFragment_to_noteTypeFragment)
-            }else{
-                Toast.makeText(
-                    context,
-                    "Please enter note Title",
-                    Toast.LENGTH_LONG).show()
-            }
+           updateNote()
         }
 
         binding.backgroundcolorchange.setOnClickListener{
@@ -120,6 +102,42 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
         }
     }
 
+    private fun setLayout() {
+        binding.etNoteTitleUpdate.setText(currentNote.noteTitle)
+        binding.etNoteBodyUpdate.setText(currentNote.noteBody)
+        try {
+            color = android.graphics.Color.parseColor(currentNote.bgColor)
+            binding.mainbg.setBackgroundColor(color)  // Use setBackgroundColor instead of setBackgroundResource
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+            color = android.graphics.Color.WHITE  // Fallback to white if parsing fails
+            binding.mainbg.setBackgroundColor(color)
+        }
+    }
+
+    fun updateNote(){
+        val title = binding.etNoteTitleUpdate.text.toString().trim()
+        val body = binding.etNoteBodyUpdate.text.toString().trim()
+        color = try {
+            android.graphics.Color.parseColor(currentNote.bgColor)
+        } catch (e: IllegalArgumentException) {
+            android.graphics.Color.WHITE // Default to white if parsing fails
+        }
+
+        if (title.isNotEmpty()){
+            val note = Notes(currentNote.id,title, body,String.format(
+                "#%06X",
+                0xFFFFFF and color
+            ),currentNote.createdDate)
+            notesViewModel.updateNote(note)
+            view?.findNavController()?.navigate(R.id.action_updateNoteFragment_to_noteTypeFragment)
+        }else{
+            Toast.makeText(
+                context,
+                "Please enter note Title",
+                Toast.LENGTH_LONG).show()
+        }
+    }
     private fun deleteNote(){
         AlertDialog.Builder(activity).apply {
 
@@ -299,11 +317,7 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
         for (card in cardViews) {
             card.setOnClickListener {
                 val colorInt = card.cardBackgroundColor.defaultColor // Get the background color
-
-                // Save color to SharedPreferences
-                val sharedPref = requireActivity().getSharedPreferences("NoteBg", Context.MODE_PRIVATE)
-                sharedPref.edit().putInt("selected_color", colorInt).apply()
-
+                color=colorInt
                 // Set background immediately
                 binding.mainbg.setBackgroundColor(colorInt)
 

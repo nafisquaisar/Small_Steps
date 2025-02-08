@@ -18,4 +18,8 @@ interface CheckBoxDAO {
 
     @Query("SELECT * FROM checkbox_note ORDER BY id DESC")
     fun getAllCheckBoxNotes(): LiveData<List<CheckBoxNote>>
+
+    @Query("SELECT * FROM checkbox_note WHERE title LIKE '%' || :query || '%' OR checkBoxes LIKE '%' || :query || '%' ORDER BY title COLLATE NOCASE ASC")
+    fun searchCheckBoxNote(query: String): LiveData<List<CheckBoxNote>>
+
 }

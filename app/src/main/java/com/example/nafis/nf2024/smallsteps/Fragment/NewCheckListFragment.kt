@@ -24,6 +24,7 @@ import com.example.nafis.nf2024.smallsteps.ViewModel.CheckBoxViewModel
 import com.example.nafis.nf2024.smallsteps.databinding.FragmentNewCheckListBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.properties.Delegates
 
@@ -67,7 +68,8 @@ class NewCheckListFragment : Fragment() {
         binding.checkboxRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         checkBoxAdapter= CheckBoxAdapter()
         binding.checkboxRecyclerView.adapter=checkBoxAdapter
-
+        val currentDate=getCurrentDateTime()
+        binding.datetime.setText(currentDate)
         addCheckboxButton.setOnClickListener {
             addNewCheckbox()
         }
@@ -79,15 +81,20 @@ class NewCheckListFragment : Fragment() {
             saveCheckNote()
         }
 
+
         return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveCheckNote() {
-        val currentDate=getCurrentDate()
+        val currentDate=getCurrentDateTime()
         val title=binding.etNoteTitle.text.toString()
+
         if(title.isNotEmpty()){
-                val note= CheckBoxNote(title = title, checkBoxes = list, backgroundColor = color.toString(), dateCreated = currentDate)
+                val note= CheckBoxNote(title = title, checkBoxes = list, backgroundColor = String.format(
+                    "#%06X",
+                    0xFFFFFF and color
+                ), dateCreated = currentDate)
                  checkBoxViewModel.addCheckBoxNote(note)
             Toast.makeText(context,
                 "Note Saved Successfully",
@@ -106,11 +113,8 @@ class NewCheckListFragment : Fragment() {
     }
 
     private fun addNewCheckbox() {
-        val newCheckbox = checkbox(id = list.size + 1, isChecked = false, text = "New Checkbox")
-       Toast.makeText(requireContext(),"Before Add: ${list.size}",Toast.LENGTH_SHORT).show()
+        val newCheckbox = checkbox(id = list.size + 1, isChecked = false, text = "")
         list.add(newCheckbox) // Add new checkbox to the list
-        Toast.makeText(requireContext(),"After Add: ${list.size}",Toast.LENGTH_SHORT).show()
-
         checkBoxAdapter.submitList(ArrayList(list)) // Notify adapter that data has changed
     }
 
@@ -136,7 +140,7 @@ class NewCheckListFragment : Fragment() {
         for (card in cardViews) {
             card.setOnClickListener {
                 val colorInt = card.cardBackgroundColor.defaultColor // Get the background color
-
+                color = colorInt
                 // Set background immediately
                 binding.mainbg.setBackgroundColor(colorInt)
 
@@ -155,10 +159,10 @@ class NewCheckListFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getCurrentDate(): String {
-        val currentDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy") // Format as a string
-        return currentDate.format(formatter)
+    fun getCurrentDateTime(): String {
+        val currentDateTime = LocalDateTime.now() // Get current date & time
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss") // Format: DD/MM/YYYY HH:MM:SS
+        return currentDateTime.format(formatter) // Return formatted date & time
     }
 
 
