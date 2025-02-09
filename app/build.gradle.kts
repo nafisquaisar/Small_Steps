@@ -91,6 +91,7 @@ dependencies {
     implementation ("androidx.biometric:biometric:1.2.0-alpha03")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.github.chrisbanes:PhotoView:2.3.0")
 
 
 
