@@ -3,11 +3,14 @@ package com.example.nafis.nf2024.smallsteps.Adapter
 import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nafis.nf2024.smallsteps.DiffUtil.NoteItemClick
+import com.example.nafis.nf2024.smallsteps.Model.NoteContent
 import com.example.nafis.nf2024.smallsteps.Model.Notes
 import com.example.nafis.nf2024.smallsteps.databinding.NoteLayoutBinding
 import java.util.Random
 
 class NoteViewHolder(var binding: NoteLayoutBinding, var callback: NoteItemClick):RecyclerView.ViewHolder(binding.root) {
+    private lateinit var noteAdapter:NoteContentAdapter
+    private lateinit var list:ArrayList<NoteContent>
 
     fun bind(note: Notes){
         binding.tvNoteTitle.text = note.noteTitle
@@ -20,6 +23,8 @@ class NoteViewHolder(var binding: NoteLayoutBinding, var callback: NoteItemClick
             random.nextInt(256),
             random.nextInt(256)
         )
+
+
 
         binding.ibColor.setBackgroundColor(color)
 

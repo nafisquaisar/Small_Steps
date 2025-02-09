@@ -7,4 +7,5 @@ import com.example.nafis.nf2024.smallsteps.Model.checkbox
 
 interface CheckBoxItemClick {
     fun onCheckClick(note: checkbox)
+    fun onDeleteClick(pos:Int,note: checkbox)
 }

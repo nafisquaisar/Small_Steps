@@ -16,11 +16,11 @@
                 android:icon="@drawable/baseline_delete_24"
                 />
 
-            <item
-                android:id="@+id/backgroundcolor"
-                android:title="Change Background"
-                android:icon="@drawable/baseline_color_lens_24"
-                />
+<!--            <item-->
+<!--                android:id="@+id/backgroundcolor"-->
+<!--                android:title="Change Background"-->
+<!--                android:icon="@drawable/baseline_color_lens_24"-->
+<!--                />-->
             <item
                 android:id="@+id/exportUpdatefile"
                 android:title="Export Note"

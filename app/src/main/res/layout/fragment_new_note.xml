@@ -85,19 +85,11 @@ android:layout_height="match_parent"
                     android:textStyle="bold" />
 
 
-                <EditText
-                    android:id="@+id/etNoteBody"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:hint="Type something..."
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/Primary"
-                    android:textSize="16sp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/noteRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
 
             </LinearLayout>
 

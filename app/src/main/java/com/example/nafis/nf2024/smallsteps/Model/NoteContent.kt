@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class NoteContent(
     val id:Int=0,
-    val Text:String="",
-    val imgUri:String=""
+    var Text:String="",
+    val imgUri:String="",
+    val isText:Boolean=false
 )  : Parcelable

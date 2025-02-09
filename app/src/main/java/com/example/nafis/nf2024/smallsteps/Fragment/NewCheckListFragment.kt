@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nafis.nf2024.smallsteps.Adapter.CheckBoxAdapter
+import com.example.nafis.nf2024.smallsteps.Adapter.CheckBoxViewHolder
 import com.example.nafis.nf2024.smallsteps.DiffUtil.CheckBoxItemClick
 import com.example.nafis.nf2024.smallsteps.MainActivity
 import com.example.nafis.nf2024.smallsteps.Model.CheckBoxNote
@@ -42,6 +43,13 @@ class NewCheckListFragment : Fragment() {
             override fun onCheckClick(note: checkbox) {
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onDeleteClick(pos: Int, note: checkbox) {
+                list.removeAt(pos) // Update the list
+                checkBoxAdapter.submitList(ArrayList(list))
+                saveCheckNote(true)
+            }
+
         }
     }
 
@@ -66,7 +74,7 @@ class NewCheckListFragment : Fragment() {
         val addCheckboxButton = binding.addcheckbox
         list= ArrayList()
         binding.checkboxRecyclerView.layoutManager=LinearLayoutManager(requireContext())
-        checkBoxAdapter= CheckBoxAdapter()
+        checkBoxAdapter= CheckBoxAdapter(callback)
         binding.checkboxRecyclerView.adapter=checkBoxAdapter
         val currentDate=getCurrentDateTime()
         binding.datetime.setText(currentDate)
@@ -78,6 +86,7 @@ class NewCheckListFragment : Fragment() {
         }
 
         binding.fabDoneCheckbox.setOnClickListener {
+            updateAllCheckboxText()
             saveCheckNote()
         }
 
@@ -85,8 +94,18 @@ class NewCheckListFragment : Fragment() {
         return binding.root
     }
 
+
+    private fun updateAllCheckboxText() {
+        for (i in 0 until binding.checkboxRecyclerView.childCount) {
+            val holder = binding.checkboxRecyclerView.findViewHolderForAdapterPosition(i)
+            if (holder is CheckBoxViewHolder) {
+                list[i].text = holder.binding.checkboxedittext.text.toString()
+            }
+
+        }
+    }
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveCheckNote() {
+    private fun saveCheckNote(isdelete:Boolean=false) {
         val currentDate=getCurrentDateTime()
         val title=binding.etNoteTitle.text.toString()
 
@@ -96,14 +115,15 @@ class NewCheckListFragment : Fragment() {
                     0xFFFFFF and color
                 ), dateCreated = currentDate)
                  checkBoxViewModel.addCheckBoxNote(note)
-            Toast.makeText(context,
-                "Note Saved Successfully",
-                Toast.LENGTH_LONG).show()
-            val bundle=Bundle().apply {
-                putInt("selectedTabIndex", 1)
-            }
-            requireParentFragment().findNavController().navigate(R.id.action_newCheckListFragment_to_noteTypeFragment,bundle)
-
+           if(!isdelete){
+               Toast.makeText(context,
+                   "Note Saved Successfully",
+                   Toast.LENGTH_LONG).show()
+               val bundle=Bundle().apply {
+                   putInt("selectedTabIndex", 1)
+               }
+               requireParentFragment().findNavController().navigate(R.id.action_newCheckListFragment_to_noteTypeFragment,bundle)
+           }
         }else{
             Toast.makeText(
                 context,
@@ -160,9 +180,9 @@ class NewCheckListFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentDateTime(): String {
-        val currentDateTime = LocalDateTime.now() // Get current date & time
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss") // Format: DD/MM/YYYY HH:MM:SS
-        return currentDateTime.format(formatter) // Return formatted date & time
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+        return currentDateTime.format(formatter)
     }
 
 

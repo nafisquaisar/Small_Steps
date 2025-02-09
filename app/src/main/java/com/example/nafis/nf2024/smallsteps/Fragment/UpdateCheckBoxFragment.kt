@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.ParcelFileDescriptor
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -29,6 +28,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nafis.nf2024.smallsteps.Adapter.CheckBoxAdapter
 import com.example.nafis.nf2024.smallsteps.Adapter.CheckBoxViewHolder
+import com.example.nafis.nf2024.smallsteps.DiffUtil.CheckBoxItemClick
 import com.example.nafis.nf2024.smallsteps.MainActivity
 import com.example.nafis.nf2024.smallsteps.Model.CheckBoxNote
 import com.example.nafis.nf2024.smallsteps.Model.checkbox
@@ -36,21 +36,11 @@ import com.example.nafis.nf2024.smallsteps.R
 import com.example.nafis.nf2024.smallsteps.ViewModel.CheckBoxViewModel
 import com.example.nafis.nf2024.smallsteps.databinding.FragmentUpdateCheckBoxBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.itextpdf.commons.utils.Base64
-import com.itextpdf.forms.PdfAcroForm
-import com.itextpdf.forms.fields.PdfButtonFormField
-import com.itextpdf.io.font.FontProgramFactory
-import com.itextpdf.io.font.PdfEncodings
-import com.itextpdf.kernel.font.PdfFont
-import com.itextpdf.kernel.font.PdfFontFactory
-import com.itextpdf.kernel.geom.Rectangle
 import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfName.Table
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.kernel.pdf.canvas.draw.SolidLine
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.borders.Border
-import com.itextpdf.layout.borders.SolidBorder
 import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.LineSeparator
 import com.itextpdf.layout.element.Paragraph
@@ -59,7 +49,6 @@ import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.UnitValue
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -77,6 +66,21 @@ class UpdateCheckBoxFragment : Fragment() {
     private lateinit var checkboxContainer: LinearLayout
     private val CREATE_FILE_REQUEST_CODE = 1
 
+
+    private val callback by lazy{
+        object :CheckBoxItemClick{
+            override fun onCheckClick(note: checkbox) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDeleteClick(pos: Int, note: checkbox) {
+                list.removeAt(pos) // Update the list
+                checkBoxAdapter.submitList(ArrayList(list))
+                updateCheckBox(true)
+            }
+
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,7 +101,7 @@ class UpdateCheckBoxFragment : Fragment() {
                 }
         )
 
-        currentNote = arg.checknote!!
+        currentNote = arg.checknote
         checkBoxViewModel = (activity as MainActivity).checkNoteViewModel
 
         setAllLayout()
@@ -164,14 +168,14 @@ class UpdateCheckBoxFragment : Fragment() {
         list = currentNote.checkBoxes
         binding.checkboxRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.checkboxRecyclerView.isNestedScrollingEnabled = false
-        checkBoxAdapter = CheckBoxAdapter()
+        checkBoxAdapter = CheckBoxAdapter(callback)
         binding.checkboxRecyclerView.adapter = checkBoxAdapter
         checkBoxAdapter.submitList(currentNote.checkBoxes)
     }
 
 
     //================   update the checkbox note    =======================
-    private fun updateCheckBox() {
+    private fun updateCheckBox( isdelete:Boolean=false) {
         val currentDate = currentNote.dateCreated
         val title = binding.etNoteTitle.text.toString().trim()
 
@@ -183,30 +187,33 @@ class UpdateCheckBoxFragment : Fragment() {
         }
 
         if (title.isNotEmpty()) {
+            val updatedList = ArrayList(list.filter { it.text.isNotBlank() })
             val note = CheckBoxNote(
                 id = currentNote.id, // Preserve existing ID
                 title = title,
-                checkBoxes = list,
+                checkBoxes = updatedList,
                 backgroundColor = String.format(
                     "#%06X",
                     0xFFFFFF and color
                 ), // Convert color back to HEX string
                 dateCreated = currentDate
             )
-
             checkBoxViewModel.updateCheckBoxNote(note)
 
-            Toast.makeText(
-                context,
-                "Note Updated Successfully",
-                Toast.LENGTH_LONG
-            ).show()
 
-            val bundle = Bundle().apply {
-                putInt("selectedTabIndex", 1) // 1 for "CheckList" tab
-            }
-            requireParentFragment().findNavController()
-                .navigate(R.id.action_updateCheckBoxFragment_to_noteTypeFragment, bundle)
+
+          if(!isdelete) {
+              Toast.makeText(
+                  context,
+                  "Note Updated Successfully",
+                  Toast.LENGTH_LONG
+              ).show()
+              val bundle = Bundle().apply {
+                  putInt("selectedTabIndex", 1) // 1 for "CheckList" tab
+              }
+              requireParentFragment().findNavController()
+                  .navigate(R.id.action_updateCheckBoxFragment_to_noteTypeFragment, bundle)
+          }
         } else {
             Toast.makeText(
                 context,
@@ -319,10 +326,10 @@ class UpdateCheckBoxFragment : Fragment() {
                 return true
             }
 
-            R.id.backgroundcolor -> {
-//                showCardSelectionDialog()
-                return true
-            }
+//            R.id.backgroundcolor -> {
+////                showCardSelectionDialog()
+//                return true
+//            }
 
         }
         return super.onOptionsItemSelected(item)

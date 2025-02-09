@@ -92,6 +92,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
 
     private fun setUpRecyclerView() {
         list=ArrayList()
+        list.clear()
         noteAdapter= NoteAdapter(list,callback)
         binding.recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(

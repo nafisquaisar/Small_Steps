@@ -5,17 +5,19 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nafis.nf2024.smallsteps.DiffUtil.CheckBoxItemClick
 import com.example.nafis.nf2024.smallsteps.Model.checkbox
 import com.example.nafis.nf2024.smallsteps.databinding.CheckboxitemBinding
 
 class CheckBoxViewHolder(
     var binding: CheckboxitemBinding,
     private val adapter: CheckBoxAdapter,
-    private val s: Boolean
+    private val s: Boolean,
+    private var callback: CheckBoxItemClick
 ):RecyclerView.ViewHolder(binding.root) {
 
     fun bind(note: checkbox, pos: Int) {
-        initializeCheckboxState(note)
+        initializeCheckboxState(note,pos)
         initializeEditTextState(note)
 
         if (s) {
@@ -27,9 +29,9 @@ class CheckBoxViewHolder(
         setupListeners(note, pos)
     }
 
-    private fun initializeCheckboxState(note: checkbox) {
+    private fun initializeCheckboxState(note: checkbox, pos: Int) {
         binding.checkboxitem.isChecked = note.isChecked
-        if (note.isChecked) complete() else reset()
+        if (note.isChecked) complete(note,pos) else reset(note,pos)
     }
 
     private fun initializeEditTextState(note: checkbox) {
@@ -65,11 +67,11 @@ class CheckBoxViewHolder(
     private fun setupListeners(note: checkbox, pos: Int) {
         binding.checkboxitem.setOnCheckedChangeListener { _, isChecked ->
             note.isChecked = isChecked
-            if (isChecked) complete() else reset()
+            if (isChecked) complete(note, pos) else reset(note, pos)
         }
 
         binding.deleteIcon.setOnClickListener {
-            deleteCheckbox(pos)
+            deleteCheckbox(pos,note)
         }
 
         binding.checkboxedittext.setOnFocusChangeListener { _, hasFocus ->
@@ -80,7 +82,7 @@ class CheckBoxViewHolder(
         }
     }
 
-    private fun complete() {
+    private fun complete(note: checkbox, pos: Int) {
         binding.checkboxedittext.apply {
             setTextColor(Color.GRAY)
             paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -89,9 +91,10 @@ class CheckBoxViewHolder(
             isFocusableInTouchMode = false
             isEnabled = false
         }
+        adapter.updateItem(pos, note) // ✅ Ensure UI updates correctly
     }
 
-    private fun reset() {
+    private fun reset(note: checkbox, pos: Int) {
         binding.checkboxedittext.apply {
             setTextColor(Color.BLACK)
             paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
@@ -100,14 +103,15 @@ class CheckBoxViewHolder(
             isFocusableInTouchMode = true
             isEnabled = true
         }
+        adapter.updateItem(pos, note) // ✅ Ensure UI updates correctly
     }
 
-    private fun deleteCheckbox(pos: Int) {
+    private fun deleteCheckbox(pos: Int, note: checkbox) {
         AlertDialog.Builder(binding.root.context).apply {
             setTitle("Delete Note")
             setMessage("You want to delete this Note?")
             setPositiveButton("Delete") { _, _ ->
-                adapter.deleteItem(pos)
+                callback.onDeleteClick(pos,note)
             }
             setNegativeButton("Cancel", null)
         }.create().show()

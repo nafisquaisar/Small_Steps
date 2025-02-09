@@ -90,6 +90,7 @@ dependencies {
     implementation ("com.itextpdf:itext7-core:7.2.3")
     implementation ("androidx.biometric:biometric:1.2.0-alpha03")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 
 

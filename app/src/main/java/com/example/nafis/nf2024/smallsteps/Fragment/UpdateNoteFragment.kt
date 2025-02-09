@@ -1,17 +1,22 @@
 package com.example.nafis.nf2024.smallsteps.Fragment
 
 
+import android.Manifest
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -19,9 +24,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -29,7 +36,12 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nafis.nf2024.smallsteps.Adapter.NoteContentAdapter
+import com.example.nafis.nf2024.smallsteps.Adapter.NoteContentViewHolder
+import com.example.nafis.nf2024.smallsteps.DiffUtil.NoteContentClick
 import com.example.nafis.nf2024.smallsteps.MainActivity
+import com.example.nafis.nf2024.smallsteps.Model.NoteContent
 import com.example.nafis.nf2024.smallsteps.Model.Notes
 import com.example.nafis.nf2024.smallsteps.R
 import com.example.nafis.nf2024.smallsteps.ViewModel.NoteViewModel
@@ -41,6 +53,10 @@ import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Paragraph
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.properties.Delegates
 
 
@@ -48,15 +64,44 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
 
     private var _binding : FragmentUpdateNoteBinding? = null
     private val binding get() = _binding!!
-
+    private var imageUri: Uri? = null
     private lateinit var notesViewModel : NoteViewModel
-  private var color by Delegates.notNull<Int>()
+    private var color by Delegates.notNull<Int>()
+    private lateinit var list:ArrayList<NoteContent>
 
     private lateinit var currentNote : Notes
     private val CREATE_FILE_REQUEST_CODE = 1
+    private val REQUEST_GALLERY = 1
+    private val REQUEST_CAMERA = 2
+    private val CAMERA_PERMISSION_REQUEST_CODE = 1001
     // Since the Update Note Fragment contains arguments in nav_graph
     private val args: UpdateNoteFragmentArgs by navArgs()
+    private lateinit var noteAdapter:NoteContentAdapter
 
+    private val callback by lazy {
+        object: NoteContentClick {
+            override fun onNoteContentClick(note: NoteContent) {
+
+            }
+
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onDelete(pos: Int, note: NoteContent) {
+                if (pos in list.indices) {
+                    val updatedList = ArrayList(list)
+                    updatedList.removeAt(pos)
+                    list = updatedList
+                    noteAdapter.submitList(updatedList)
+                } else {
+                    Toast.makeText(context, "Invalid operation: List is empty or position is invalid", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onTextAdd(pos: Int, note: NoteContent) {
+
+            }
+
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,41 +139,73 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
 
         // if the user update the note
         binding.fabDone.setOnClickListener{
+            updateAllCheckboxText()
            updateNote()
         }
 
         binding.backgroundcolorchange.setOnClickListener{
             showBottomDialog()
         }
+
+        binding.btnBulletPoint.setOnClickListener {
+            insertBulletPoint()
+        }
+        binding.btnChecklist.setOnClickListener {
+            insertChecklist()
+        }
+        binding.textImage.setOnClickListener {
+            addTextSpace()
+        }
+        binding.btnImage.setOnClickListener {
+            showImagePickerDialog()
+        }
     }
 
+
     private fun setLayout() {
-        binding.etNoteTitleUpdate.setText(currentNote.noteTitle)
-        binding.etNoteBodyUpdate.setText(currentNote.noteBody)
+        list = ArrayList(currentNote.contentList)  // Ensure a new list instance
+
+        binding.etNoteTitle.setText(currentNote.noteTitle)
+        binding.datetime.setText(currentNote.createdDate)
         try {
             color = android.graphics.Color.parseColor(currentNote.bgColor)
-            binding.mainbg.setBackgroundColor(color)  // Use setBackgroundColor instead of setBackgroundResource
+            binding.cardView2.setBackgroundColor(color)  // Use setBackgroundColor instead of setBackgroundResource
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()
             color = android.graphics.Color.WHITE  // Fallback to white if parsing fails
-            binding.mainbg.setBackgroundColor(color)
+            binding.cardView2.setBackgroundColor(color)
+        }
+        binding.noteRecycler.layoutManager= LinearLayoutManager(requireContext())
+        noteAdapter= NoteContentAdapter(callback)
+        binding.noteRecycler.adapter=noteAdapter
+        noteAdapter.submitList(ArrayList(list))  // Ensure proper update
+        noteAdapter.notifyDataSetChanged() // Force UI update
+    }
+
+    private fun updateAllCheckboxText()     {
+        for (i in 0 until noteAdapter.itemCount) {  // Loop through all items
+            val holder = binding.noteRecycler.findViewHolderForAdapterPosition(i)
+            if (holder is NoteContentViewHolder) {
+                list[i].Text = holder.binding.noteEditText.text.toString()  // Update list from views
+            }
         }
     }
 
     fun updateNote(){
-        val title = binding.etNoteTitleUpdate.text.toString().trim()
-        val body = binding.etNoteBodyUpdate.text.toString().trim()
+        val title = binding.etNoteTitle.text.toString().trim()
+        val updatedList = ArrayList(list)
+        list = updatedList
         color = try {
             android.graphics.Color.parseColor(currentNote.bgColor)
         } catch (e: IllegalArgumentException) {
-            android.graphics.Color.WHITE // Default to white if parsing fails
+            android.graphics.Color.WHITE
         }
 
         if (title.isNotEmpty()){
-            val note = Notes(currentNote.id,title, body,String.format(
+            val note = Notes(currentNote.id,title,"",String.format(
                 "#%06X",
                 0xFFFFFF and color
-            ),currentNote.createdDate)
+            ),currentNote.createdDate,list)
             notesViewModel.updateNote(note)
             view?.findNavController()?.navigate(R.id.action_updateNoteFragment_to_noteTypeFragment)
         }else{
@@ -157,6 +234,162 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
 
     }
 
+
+    private fun addTextSpace() {
+        val newContent = NoteContent(id = list.size + 1, Text = "", imgUri = "", isText = true)
+        val updatedList = ArrayList(list)
+        updatedList.add(newContent)
+
+        list = updatedList
+        noteAdapter.submitList(updatedList)
+
+    }
+    private fun insertChecklist() {
+        // Find the currently focused EditText in the RecyclerView
+        val focusedView = binding.noteRecycler.findFocus()
+        if (focusedView is EditText) {
+            val currentText = focusedView.text.toString()
+            val cursorPos = focusedView.selectionStart
+
+            // Insert the checklist symbol at the current cursor position
+            val updatedText = currentText.substring(0, cursorPos) + "☑ " + currentText.substring(cursorPos)
+            focusedView.setText(updatedText)
+
+            // Restore the cursor position after the inserted text
+            focusedView.setSelection(cursorPos + 2)
+        } else {
+            Toast.makeText(context, "Select a note to add a Check Box", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun insertBulletPoint() {
+
+        val focusedView = binding.noteRecycler.findFocus()
+        if (focusedView is EditText) {
+            val currentText = focusedView.text.toString()
+            val cursorPos = focusedView.selectionStart
+
+            // Insert the checklist symbol at the current cursor position
+            val updatedText = currentText.substring(0, cursorPos) + "• " + currentText.substring(cursorPos)
+            focusedView.setText(updatedText)
+
+            // Restore the cursor position after the inserted text
+            focusedView.setSelection(cursorPos + 2)
+        } else {
+            Toast.makeText(context, "Select a note to add a Bullet Point", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun showImagePickerDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setTitle("Choose Image")
+            .setItems(arrayOf("Camera", "Gallery")) { dialog, which ->
+                if (which === 0) {
+                    openCamera()
+                } else {
+                    openGallery()
+                }
+            }
+            .show()
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_GALLERY)
+    }
+
+    private fun openCamera() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            // Request CAMERA permission
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        } else {
+            launchCamera()
+        }
+    }
+
+    private fun launchCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            val photoFile = createImageFile()
+            if (photoFile != null) {
+                imageUri = FileProvider.getUriForFile(
+                    requireContext(),
+                    "com.example.nafis.nf2024.smallsteps.fileprovider",
+                    photoFile
+                )
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                startActivityForResult(intent, REQUEST_CAMERA)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, launch camera
+                launchCamera()
+            } else {
+                Toast.makeText(requireContext(), "Camera permission is required!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun createImageFile(): File? {
+        return try {
+            val timeStamp: String =
+                SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            File.createTempFile("IMG_$timeStamp", ".jpg", storageDir)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_GALLERY -> {
+                    imageUri = data?.data
+                    imageUri?.let { uri ->
+                        val newContent = NoteContent(
+                            id = list.size + 1,
+                            Text = "",
+                            imgUri = uri.toString(),
+                            isText = false
+                        )
+                        list.add(newContent)
+                        noteAdapter.submitList(ArrayList(list))
+                        noteAdapter.notifyDataSetChanged()
+                    }
+                }
+
+                REQUEST_CAMERA -> {
+                    // Use the imageUri assigned when opening the camera
+                    imageUri?.let { uri ->
+                        val newContent = NoteContent(
+                            id = list.size + 1,
+                            Text = "",
+                            imgUri = uri.toString(),
+                            isText = false
+                        )
+                        list.add(newContent)
+                        noteAdapter.submitList(ArrayList(list))
+                        noteAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+    }
+
+
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.menu_update_note,menu)
@@ -181,10 +414,10 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
                 createPdfFile()
                 return true
             }
-            R.id.backgroundcolor->{
-//                showCardSelectionDialog()
-                return true
-            }
+//            R.id.backgroundcolor->{
+////                showCardSelectionDialog()
+//                return true
+//            }
 
         }
         return super.onOptionsItemSelected(item)
@@ -251,21 +484,6 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
         startActivityForResult(intent, CREATE_FILE_REQUEST_CODE)
     }
 
-    // Step 2: Handle the file location chosen by the user
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CREATE_FILE_REQUEST_CODE && resultCode == RESULT_OK) {
-            val uri = data?.data
-            if (uri != null) {
-                try {
-                    writePdf(uri)
-                } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Error creating PDF: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
     // Step 3: Generate and write the PDF content
     private fun writePdf(uri: Uri) {
         currentNote=args.note!!
@@ -319,8 +537,8 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
                 val colorInt = card.cardBackgroundColor.defaultColor // Get the background color
                 color=colorInt
                 // Set background immediately
-                binding.mainbg.setBackgroundColor(colorInt)
-
+                binding.cardView2.setBackgroundColor(colorInt)
+                currentNote.bgColor = String.format("#%06X", 0xFFFFFF and colorInt)
                 bottomSheetDialog.dismiss()
             }
         }

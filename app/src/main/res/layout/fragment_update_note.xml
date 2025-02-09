@@ -9,7 +9,7 @@
         tools:context=".Fragment.UpdateNoteFragment">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
@@ -20,16 +20,19 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@color/white"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="8dp">
 
-
                 <LinearLayout
-                    android:id="@+id/mainbg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
@@ -38,46 +41,58 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/etNoteTitleUpdate"
-                            android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:id="@+id/datetime"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:background="@android:color/transparent"
-                            android:ems="10"
-                            android:hint="Type your title"
-                            android:inputType="text"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/black"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
+                            android:text=""
+                            android:layout_weight="1"
+                            android:textSize="@dimen/_12sdp"
+                            />
                         <ImageView
                             android:id="@+id/backgroundcolorchange"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
                             android:src="@drawable/baseline_color_lens_24" />
+                        <!--                    <ImageView-->
+                        <!--                        android:id="@+id/addcheckbox"-->
+                        <!--                        android:layout_width="@dimen/_20sdp"-->
+                        <!--                        android:layout_height="@dimen/_20sdp"-->
+                        <!--                        android:src="@drawable/checkbox" />-->
                     </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/etNoteBodyUpdate"
+                    <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/line"
+                        />
+
+                    <EditText
+                        android:id="@+id/etNoteTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:ems="10"
-                        android:gravity="start|top"
-                        android:hint="Type something..."
-                        android:inputType="textMultiLine"
+                        android:hint="Type your title"
+                        android:inputType="text"
                         android:textColor="@color/black"
-                        android:textColorHint="@color/Primary"
-                        android:textSize="16sp" />
+                        android:textColorHint="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/noteRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
+
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

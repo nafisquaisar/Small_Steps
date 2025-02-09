@@ -4,8 +4,10 @@ import android.graphics.Color
 import android.view.MotionEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nafis.nf2024.smallsteps.DiffUtil.CheckBoxItemClick
 import com.example.nafis.nf2024.smallsteps.DiffUtil.CheckBoxNoteItemClick
 import com.example.nafis.nf2024.smallsteps.Model.CheckBoxNote
+import com.example.nafis.nf2024.smallsteps.Model.checkbox
 import com.example.nafis.nf2024.smallsteps.databinding.CheckNoteLayoutBinding
 import java.util.Random
 
@@ -15,6 +17,19 @@ class CheckBoxNoteViewHolder(
 ):RecyclerView.ViewHolder(binding.root) {
 
     private lateinit var checkBoxAdapter: CheckBoxAdapter
+
+    private val callbackCheckbox by lazy{
+        object :CheckBoxItemClick{
+            override fun onCheckClick(note: checkbox) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDeleteClick(pos: Int, note: checkbox) {
+                TODO("Not yet implemented")
+            }
+
+        }
+    }
 
     fun bind(note: CheckBoxNote) {
         binding.tvNoteTitle.text = note.title
@@ -35,7 +50,7 @@ class CheckBoxNoteViewHolder(
 
         binding.bgmain.setBackgroundColor(color)
         binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
-        checkBoxAdapter = CheckBoxAdapter(true)
+        checkBoxAdapter = CheckBoxAdapter(callbackCheckbox,true)
         binding.recyclerView.adapter = checkBoxAdapter
 
 
